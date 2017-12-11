@@ -1,5 +1,7 @@
 #Change this if you need to target a specific CMake version
 cmake_minimum_required(VERSION 2.6)
+set (CMAKE_CXX_STANDARD 11)
+add_subdirectory( sexp-cpp )
 
 # Enable debug symbols by default
 # must be done before project() statement
@@ -11,8 +13,8 @@ endif()
 project(myproject)
 
 # Set version information in a config.h file
-set(myproject_VERSION_MAJOR 1)
-set(myproject_VERSION_MINOR 0)
+set(myproject_VERSION_MAJOR 0)
+set(myproject_VERSION_MINOR 10)
 configure_file(
   "${PROJECT_SOURCE_DIR}/config.h.in"
   "${PROJECT_BINARY_DIR}/config.h"
@@ -33,6 +35,7 @@ if(SFML_FOUND)
   target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 endif()
 
+target_link_libraries(${EXECUTABLE_NAME} sexp)
 
 # Install target
 install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
