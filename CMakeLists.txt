@@ -1,7 +1,15 @@
 #Change this if you need to target a specific CMake version
 cmake_minimum_required(VERSION 2.6)
 set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
+set(CMAKE_C_COMPILER "/usr/bin/clang")
+set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
+
 add_subdirectory( sexp-cpp )
+include_directories("include/scratchy")
+include_directories("sexp-cpp/include")
+add_subdirectory( lib )
 
 # Enable debug symbols by default
 # must be done before project() statement
@@ -10,19 +18,19 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 # (you can also set it on the command line: -D CMAKE_BUILD_TYPE=Release)
 
-project(myproject)
+project(scratchy)
 
 # Set version information in a config.h file
 set(myproject_VERSION_MAJOR 0)
 set(myproject_VERSION_MINOR 10)
 configure_file(
   "${PROJECT_SOURCE_DIR}/config.h.in"
-  "${PROJECT_BINARY_DIR}/config.h"
+  "${PROJECT_SOURCE_DIR}/config.h"
   )
-include_directories("${PROJECT_BINARY_DIR}")
+
 
 # Define sources and executable
-set(EXECUTABLE_NAME "myproject")
+set(EXECUTABLE_NAME "scratchy")
 add_executable(${EXECUTABLE_NAME} main.cpp)
 
 
@@ -35,7 +43,7 @@ if(SFML_FOUND)
   target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 endif()
 
-target_link_libraries(${EXECUTABLE_NAME} sexp)
+target_link_libraries(${EXECUTABLE_NAME} sexp rule ruleiterator app allrules)
 
 # Install target
 install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
